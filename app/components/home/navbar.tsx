@@ -55,7 +55,7 @@ export default function Navbar() {
                                 <div className="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:pl-7 md:divide-y-0 md:divide-solid ">
                                     <div className="p-3">
                                         <Link
-                                            className="inline-flex justify-center items-center gap-x-2 text-center bg-blue-900 hover:bg-blue-700 border border-transparent text-white text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2 focus:ring-offset-white transition py-2.5 px-3 "
+                                            className="inline-flex justify-center items-center gap-x-2 text-center  rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm py-2.5 px-3"
                                             href="/auth/login"
                                         >
                                             Login
