@@ -1,16 +1,21 @@
 "use client";
 
-import Navbar from "@/app/components/home/navbar";
-import { SignInResponse, signIn } from "next-auth/react";
+import Navbar from "@/app/components/home/Navbar";
+import { SignInResponse, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 export default function Login() {
     const router = useRouter();
+    const { data: session, status } = useSession();
+    const [signInRes, setSignInRes] = useState<SignInResponse>();
+
     const email = useRef("");
     const password = useRef("");
 
-    const [signInRes, setSignInRes] = useState<SignInResponse>();
+    if (session?.user) {
+        router.push("/dashboard");
+    }
 
     const onSubmit = async () => {
         const result = await signIn("credentials", {
@@ -19,7 +24,7 @@ export default function Login() {
             redirect: false,
         });
 
-        if (result?.ok) {
+        if (result?.ok && result.error == null) {
             router.push("/dashboard");
         }
 
