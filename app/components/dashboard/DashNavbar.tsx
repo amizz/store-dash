@@ -1,6 +1,13 @@
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
-export default function DashNavbar(props: { name: string }) {
+export default function DashNavbar({
+    name,
+    currentPage,
+}: {
+    name: string;
+    currentPage: string;
+}) {
     const logout = () => {
         signOut({
             callbackUrl: "/auth/login",
@@ -57,29 +64,39 @@ export default function DashNavbar(props: { name: string }) {
                     className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block"
                 >
                     <div className="flex flex-col gap-y-4 gap-x-0 mt-5 sm:flex-row sm:items-center sm:justify-end sm:gap-y-0 sm:gap-x-7 sm:mt-0 sm:pl-7">
-                        <a
-                            className="font-medium text-white sm:py-6"
-                            href="#"
-                            aria-current="page"
+                        <Link
+                            // className="font-medium text-white sm:py-6"
+                            className={`font-medium text-white sm:py-6 ${
+                                currentPage !== "dashboard"
+                                    ? "text-white/[.8]"
+                                    : ""
+                            }`}
+                            href="/dashboard"
                         >
                             Dashboard
-                        </a>
-                        <a
-                            className="font-medium text-white/[.8] hover:text-white sm:py-6"
-                            href="#"
+                        </Link>
+                        <Link
+                            className={`font-medium text-white sm:py-6 ${
+                                currentPage !== "products"
+                                    ? "text-white/[.8]"
+                                    : ""
+                            }`}
+                            href="/dashboard/products"
                         >
                             Products
-                        </a>
-                        <a
-                            className="font-medium text-white/[.8] hover:text-white sm:py-6"
-                            href="#"
+                        </Link>
+                        <Link
+                            className={`font-medium text-white sm:py-6 ${
+                                currentPage !== "teams" ? "text-white/[.8]" : ""
+                            }`}
+                            href="/dashboard/teams"
                         >
                             Teams
-                        </a>
+                        </Link>
 
-                        <a
+                        <Link
                             className="flex items-center gap-x-2 font-medium text-white/[.8] hover:text-white sm:border-l sm:border-white/[.3] sm:my-6 sm:pl-6"
-                            href="#"
+                            href="/dashboard/profiles"
                         >
                             <svg
                                 className="w-4 h-4"
@@ -91,8 +108,8 @@ export default function DashNavbar(props: { name: string }) {
                             >
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
                             </svg>
-                            {props.name}
-                        </a>
+                            {name}
+                        </Link>
 
                         <div className="p-3">
                             <button
