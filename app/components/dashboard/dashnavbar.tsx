@@ -1,18 +1,16 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export default function DashNavbar({
-    name,
-    currentPage,
-}: {
-    name: string;
-    currentPage: string;
-}) {
+export default function DashNavbar({ name }: { name: string }) {
+    const pathname = usePathname();
+
     const logout = () => {
         signOut({
             callbackUrl: "/auth/login",
         });
     };
+
     return (
         <header className="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-blue-600 border-b border-white/[.5] text-sm py-3 sm:py-0">
             <nav
@@ -67,7 +65,7 @@ export default function DashNavbar({
                         <Link
                             // className="font-medium text-white sm:py-6"
                             className={`font-medium text-white sm:py-6 ${
-                                currentPage !== "dashboard"
+                                pathname !== "/dashboard"
                                     ? "text-white/[.8]"
                                     : ""
                             }`}
@@ -77,7 +75,7 @@ export default function DashNavbar({
                         </Link>
                         <Link
                             className={`font-medium text-white sm:py-6 ${
-                                currentPage !== "products"
+                                pathname !== "/dashboard/products"
                                     ? "text-white/[.8]"
                                     : ""
                             }`}
@@ -87,7 +85,9 @@ export default function DashNavbar({
                         </Link>
                         <Link
                             className={`font-medium text-white sm:py-6 ${
-                                currentPage !== "teams" ? "text-white/[.8]" : ""
+                                pathname !== "/dashboard/teams"
+                                    ? "text-white/[.8]"
+                                    : ""
                             }`}
                             href="/dashboard/teams"
                         >
