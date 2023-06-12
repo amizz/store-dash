@@ -9,6 +9,7 @@ export default function Login() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const [signInRes, setSignInRes] = useState<SignInResponse>();
+    const [loading, setLoading] = useState<boolean>();
 
     const email = useRef("");
     const password = useRef("");
@@ -18,6 +19,7 @@ export default function Login() {
     }
 
     const onSubmit = async () => {
+        setLoading(true);
         const result = await signIn("credentials", {
             username: email.current,
             password: password.current,
@@ -25,10 +27,12 @@ export default function Login() {
         });
 
         if (result?.ok && result.error == null) {
+            setLoading(false);
             router.push("/dashboard");
         }
 
         setSignInRes(result);
+        setLoading(false);
     };
 
     return (
@@ -177,8 +181,20 @@ export default function Login() {
                                     type="submit"
                                     className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm "
                                     onClick={onSubmit}
+                                    disabled={loading}
                                 >
                                     Sign in
+                                    {loading && (
+                                        <span
+                                            className="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
+                                            role="status"
+                                            aria-label="loading"
+                                        >
+                                            <span className="sr-only">
+                                                Loading...
+                                            </span>
+                                        </span>
+                                    )}
                                 </button>
                             </div>
                         </div>
