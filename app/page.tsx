@@ -1,6 +1,6 @@
-import Hero from "./components/home/Hero";
-import Navbar from "./components/home/Navbar";
-import PricingSection from "./components/home/Pricing";
+import Hero from "./components/home/hero";
+import Navbar from "./components/home/navbar";
+import PricingSection from "./components/home/pricing";
 
 export default function Home() {
     return (

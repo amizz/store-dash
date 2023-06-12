@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/app/components/home/Navbar";
+import Navbar from "@/app/components/home/navbar";
 import { SignInResponse, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
