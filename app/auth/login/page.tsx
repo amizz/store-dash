@@ -20,20 +20,24 @@ export default function Login() {
     }
 
     const onSubmit = async () => {
-        setLoading(true);
-        const result = await signIn("credentials", {
-            username: email.current,
-            password: password.current,
-            redirect: false,
-        });
+        try {
+            setLoading(true);
+            const result = await signIn("credentials", {
+                username: email.current,
+                password: password.current,
+                redirect: false,
+            });
 
-        if (result?.ok && result.error == null) {
+            if (result?.ok && result.error == null) {
+                setLoading(false);
+                router.push("/dashboard");
+            }
+
+            setSignInRes(result);
             setLoading(false);
-            router.push("/dashboard");
+        } catch (error) {
+            setLoading(false);
         }
-
-        setSignInRes(result);
-        setLoading(false);
     };
 
     return (
