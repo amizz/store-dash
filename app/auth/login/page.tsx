@@ -2,6 +2,7 @@
 
 import Navbar from "@/app/components/navbar";
 import { SignInResponse, signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -46,13 +47,13 @@ export default function Login() {
                                 Sign in
                             </h1>
                             <p className="mt-2 text-sm text-gray-600 ">
-                                Don&apos;t have an account yet?
-                                <a
+                                <span>Don&apos;t have an account yet? </span>
+                                <Link
                                     className="text-blue-600 decoration-2 hover:underline font-medium"
-                                    href="../examples/html/signup.html"
+                                    href="/auth/register"
                                 >
                                     Sign up here
-                                </a>
+                                </Link>
                             </p>
                         </div>
 
