@@ -1,5 +1,8 @@
-import NextAuth, { Awaitable, RequestInternal, User } from "next-auth";
+import NextAuth, { Awaitable, RequestInternal } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+import { connection as db } from "mongoose";
+import { User } from "@/app/interfaces/model";
 
 const handler = NextAuth({
     secret: "uiwgsbkfuajsuiugbkus",
@@ -18,25 +21,30 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req) {
-                const users = [
-                    {
-                        id: "1",
-                        name: "Amirul",
-                        email: "mail@mail.com",
-                        password: "12345678",
-                    },
-                ];
+                try {
+                    const userRes = await db.collection<User>("user").findOne({
+                        email: credentials?.username,
+                    });
 
-                const user = users.find(
-                    (val) =>
-                        val.email === credentials?.username &&
-                        val.password === credentials.password
-                );
+                    if (!userRes) {
+                        throw new Error("Email or password is invalid");
+                    }
 
-                if (user) {
-                    return user;
-                } else {
-                    return null;
+                    const passwordVerify = await bcrypt.compare(
+                        credentials?.password ?? "",
+                        userRes.password
+                    );
+
+                    if (passwordVerify) {
+                        return {
+                            id: userRes._id.toHexString(),
+                            name: userRes.name,
+                        };
+                    } else {
+                        throw new Error("Email or password is invalid");
+                    }
+                } catch (error) {
+                    throw new Error("Email or password is invalid");
                 }
             },
         }),
