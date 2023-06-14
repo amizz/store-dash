@@ -1,4 +1,4 @@
-import Navbar from "@/app/components/navbar";
+import Navbar from "@/app/components/home/navbar";
 import { User } from "@/app/interfaces/model";
 import connectDB from "@/app/lib/mongoose";
 import { hash } from "bcryptjs";
