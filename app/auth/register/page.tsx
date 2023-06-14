@@ -1,7 +1,7 @@
 import Navbar from "@/app/components/navbar";
 import { User } from "@/app/interfaces/model";
 import connectDB from "@/app/lib/mongoose";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { connection as db } from "mongoose";
 import Link from "next/link";
 import { redirect } from "next/navigation";

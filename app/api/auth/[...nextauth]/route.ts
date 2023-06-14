@@ -1,6 +1,6 @@
 import NextAuth, { Awaitable, RequestInternal } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { connection as db } from "mongoose";
 import { User } from "@/app/interfaces/model";
 
