@@ -27,7 +27,6 @@ const handler = NextAuth({
                     const userRes = await db.collection<User>("user").findOne({
                         email: credentials?.username,
                     });
-                    console.log("userRes", userRes);
 
                     if (!userRes) {
                         throw new Error("Email or password is invalid");
@@ -37,12 +36,12 @@ const handler = NextAuth({
                         credentials?.password ?? "",
                         userRes.password
                     );
-                    console.log("passwordVerify", passwordVerify);
 
                     if (passwordVerify) {
                         return {
                             id: userRes._id.toHexString(),
                             name: userRes.name,
+                            email: userRes.email,
                         };
                     } else {
                         throw new Error("Email or password is invalid");
@@ -53,6 +52,23 @@ const handler = NextAuth({
             },
         }),
     ],
+    callbacks: {
+        session: async ({ session, token }) => {
+            if (session?.user) {
+                session.user.id = token.uid as string;
+            }
+            return session;
+        },
+        jwt: async ({ user, token }) => {
+            if (user) {
+                token.uid = user.id;
+            }
+            return token;
+        },
+    },
+    session: {
+        strategy: "jwt",
+    },
 });
 
 export { handler as GET, handler as POST };
