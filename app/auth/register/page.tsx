@@ -1,8 +1,7 @@
 import Navbar from "@/app/components/home/navbar";
 import { User } from "@/app/interfaces/model";
-import connectDB from "@/app/lib/mongoose";
+import { prisma } from "@/app/lib/db";
 import { hash } from "bcryptjs";
-import { connection as db } from "mongoose";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -23,17 +22,23 @@ export default function Register({
             name: data.get("name")?.toString() ?? "",
         };
 
-        await connectDB();
-
-        const user = await db.collection<User>("user").findOne({
-            email: data.get("email")?.toString(),
+        const user = await prisma.user.findFirst({
+            where: {
+                email: input.email,
+            },
         });
 
         if (user) {
             redirect("/auth/register?error=ERR_USER_REGISTERED");
         }
 
-        const userInsert = await db.collection<User>("user").insertOne(input);
+        const userInsert = await prisma.user.create({
+            data: {
+                name: input.name,
+                email: input.email,
+                password: input.password,
+            },
+        });
 
         if (userInsert) {
             redirect("/auth/login");

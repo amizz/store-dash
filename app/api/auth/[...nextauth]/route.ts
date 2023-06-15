@@ -1,9 +1,10 @@
 import NextAuth, { Awaitable, RequestInternal } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { connection as db } from "mongoose";
+// import { connection as db } from "mongoose";
 import { User } from "@/app/interfaces/model";
-import connectDB from "@/app/lib/mongoose";
+import { prisma } from "@/app/lib/db";
+// import connectDB from "@/app/lib/mongoose";
 
 const handler = NextAuth({
     secret: "uiwgsbkfuajsuiugbkus",
@@ -23,9 +24,10 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 try {
-                    await connectDB();
-                    const userRes = await db.collection<User>("user").findOne({
-                        email: credentials?.username,
+                    const userRes = await prisma.user.findFirst({
+                        where: {
+                            email: credentials?.username,
+                        },
                     });
 
                     if (!userRes) {
@@ -39,7 +41,7 @@ const handler = NextAuth({
 
                     if (passwordVerify) {
                         return {
-                            id: userRes._id.toHexString(),
+                            id: userRes.id,
                             name: userRes.name,
                             email: userRes.email,
                         };
