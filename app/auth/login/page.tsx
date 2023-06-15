@@ -3,11 +3,10 @@
 import Navbar from "@/app/components/home/navbar";
 import { SignInResponse, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useRef, useState } from "react";
 
 export default function Login() {
-    const router = useRouter();
     const { data: session, status } = useSession();
     const [signInRes, setSignInRes] = useState<SignInResponse>();
     const [loading, setLoading] = useState<boolean>();
@@ -16,7 +15,7 @@ export default function Login() {
     const password = useRef("");
 
     if (session?.user) {
-        router.push("/dashboard");
+        redirect("/dashboard");
     }
 
     const onSubmit = async () => {
@@ -30,7 +29,7 @@ export default function Login() {
 
             if (result?.ok && result.error == null) {
                 setLoading(false);
-                router.push("/dashboard");
+                redirect("/dashboard");
             }
 
             setSignInRes(result);
