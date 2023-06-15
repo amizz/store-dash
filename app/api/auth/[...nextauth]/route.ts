@@ -1,10 +1,7 @@
-import NextAuth, { Awaitable, RequestInternal } from "next-auth";
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-// import { connection as db } from "mongoose";
-import { User } from "@/app/interfaces/model";
 import { prisma } from "@/app/lib/db";
-// import connectDB from "@/app/lib/mongoose";
 
 const handler = NextAuth({
     secret: "uiwgsbkfuajsuiugbkus",
