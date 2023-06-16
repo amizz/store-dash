@@ -1,5 +1,5 @@
 "use client";
-import { getAllCompanies } from "@/app/api/companies/route";
+import { Companies } from "@/app/controllers/company";
 import { Prisma } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export default function DashNavbar({
     companies,
 }: {
     name: string;
-    companies: Prisma.PromiseReturnType<typeof getAllCompanies>;
+    companies: Companies;
 }) {
     const pathname = usePathname();
     const logout = () => {

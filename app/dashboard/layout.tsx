@@ -7,7 +7,7 @@ import SubsNotice from "../components/dashboard/subsnotice";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import { useCompanyStore } from "../store/company";
-import { Companies } from "../api/companies/route";
+import { Companies } from "../controllers/company";
 
 export default function DashboardLayout({
     children,
@@ -34,7 +34,7 @@ export default function DashboardLayout({
                 setDefaultCompany(data);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [setDefaultCompany]);
 
     if (status === "loading" || isLoading) {
         return <div>Loading...</div>;

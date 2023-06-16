@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Companies, Company } from "../api/companies/route";
+import { Companies, Company } from "../controllers/company";
 
 export const useCompanyStore = create<{
     currentCompany: Company | null;

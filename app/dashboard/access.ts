@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
-import { Company } from "../api/companies/route";
 import { TeamRole } from "@prisma/client";
+import { Company } from "../controllers/company";
 
 type Access = {
     [key: string]: {
