@@ -37,7 +37,28 @@ export default function DashboardLayout({
     }, [setDefaultCompany]);
 
     if (status === "loading" || isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div>
+                <DashNavbar
+                    name={session?.user?.name ?? ""}
+                    companies={companies}
+                ></DashNavbar>
+                <div className="w-full max-w-5xl mx-auto py-5 px-5 sm:px-5 lg:px-1">
+                    <div className="flex animate-pulse">
+                        <div className="ml-4 mt-2 w-full">
+                            <h3 className="h-4 bg-gray-200 rounded-md"></h3>
+
+                            <ul className="mt-5 space-y-3">
+                                <li className="w-10/12 h-4 bg-gray-200 rounded-md"></li>
+                                <li className="w-5/12 h-4 bg-gray-200 rounded-md"></li>
+                                <li className="w-full h-4 bg-gray-200 rounded-md"></li>
+                                <li className="w-8/12 h-4 bg-gray-200 rounded-md"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (
