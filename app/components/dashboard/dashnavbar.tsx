@@ -1,10 +1,18 @@
+"use client";
+import { getAllCompanies } from "@/app/api/companies/route";
+import { Prisma } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function DashNavbar({ name }: { name: string }) {
+export default function DashNavbar({
+    name,
+    companies,
+}: {
+    name: string;
+    companies: Prisma.PromiseReturnType<typeof getAllCompanies>;
+}) {
     const pathname = usePathname();
-
     const logout = () => {
         signOut({
             callbackUrl: "/auth/login",
@@ -41,7 +49,7 @@ export default function DashNavbar({ name }: { name: string }) {
                                 viewBox="0 0 16 16"
                             >
                                 <path
-                                    fill-rule="evenodd"
+                                    fillRule="evenodd"
                                     d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
                                 />
                             </svg>
@@ -85,6 +93,16 @@ export default function DashNavbar({ name }: { name: string }) {
                         </Link>
                         <Link
                             className={`font-medium text-white sm:py-6 ${
+                                pathname !== "/dashboard/orders"
+                                    ? "text-white/[.8]"
+                                    : ""
+                            }`}
+                            href="/dashboard/orders"
+                        >
+                            Orders
+                        </Link>
+                        <Link
+                            className={`font-medium text-white sm:py-6 ${
                                 pathname !== "/dashboard/teams"
                                     ? "text-white/[.8]"
                                     : ""
@@ -93,10 +111,66 @@ export default function DashNavbar({ name }: { name: string }) {
                         >
                             Teams
                         </Link>
+                        <div className="hs-dropdown relative inline-flex">
+                            <button
+                                id="hs-dropdown-with-dividers"
+                                type="button"
+                                className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm      "
+                            >
+                                Company
+                                <svg
+                                    className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                            </button>
 
+                            <div
+                                className="hs-dropdown-menu hidden transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 min-w-[15rem] bg-white shadow-md rounded-lg p-2 mt-2 divide-y divide-gray-200 z-10"
+                                aria-labelledby="hs-dropdown-with-dividers"
+                            >
+                                <div className="py-2 first:pt-0 last:pb-0">
+                                    {companies.map((val) => (
+                                        <a
+                                            key={val.id}
+                                            className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500   "
+                                            href="#"
+                                        >
+                                            {val.name}
+                                        </a>
+                                    ))}
+                                </div>
+                                <div className="py-2 first:pt-0 last:pb-0">
+                                    <Link
+                                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500   "
+                                        href="/dashboard/companies/create"
+                                    >
+                                        + Create
+                                    </Link>
+                                </div>
+                                <div className="py-2 first:pt-0 last:pb-0">
+                                    <a
+                                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500   "
+                                        href="#"
+                                    >
+                                        Settings
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <Link
                             className="flex items-center gap-x-2 font-medium text-white/[.8] hover:text-white sm:border-l sm:border-white/[.3] sm:my-6 sm:pl-6"
-                            href="/dashboard/profiles"
+                            href="/dashboard/profile"
                         >
                             <svg
                                 className="w-4 h-4"
