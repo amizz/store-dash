@@ -3,29 +3,11 @@ import { getServerSession } from "next-auth/next";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../api/auth/[...nextauth]/authOptions";
 import { Prisma } from "@prisma/client";
-
-export type Companies = Prisma.PromiseReturnType<typeof getAllCompanies>;
-export type Company = Prisma.PromiseReturnType<typeof getAllCompanies>[0];
-
-export async function getAllCompanies() {
-    const session = await getServerSession(authOptions);
-    const companies = await prisma.company.findMany({
-        include: {
-            Team: true,
-        },
-        where: {
-            Team: {
-                some: {
-                    userId: session?.user?.id,
-                },
-            },
-        },
-    });
-    return companies;
-}
+import { getAllCompanies } from "@/app/controllers/company";
 
 export async function GET(req: NextRequest) {
-    return NextResponse.json(await getAllCompanies());
+    const session = await getServerSession(authOptions);
+    return NextResponse.json(await getAllCompanies(session?.user.id!));
 }
 
 export async function POST() {
