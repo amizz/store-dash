@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
-
 export type User = {
-    _id?: ObjectId;
+    id?: string;
     email: string;
     password: string;
     name: string;
@@ -9,6 +7,6 @@ export type User = {
 };
 
 export type Role = {
-    _id: ObjectId;
+    id: string;
     title: string;
 };
