@@ -71,8 +71,7 @@ export function userHasAccess(
     }
 }
 
-export function getBlur(originalClass: string, accessType: AccessType) {
-    console.log(accessType === AccessType.PARTIAL);
+export function getBlurClass(originalClass: string, accessType: AccessType) {
     return (
         originalClass +
         (accessType === AccessType.PARTIAL || accessType === AccessType.NONE
