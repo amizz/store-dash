@@ -1,6 +1,6 @@
 "use client";
-import { Companies } from "@/app/controllers/company";
-import { Prisma } from "@prisma/client";
+import { Companies, Company } from "@/app/controllers/company";
+import { truncateString } from "@/app/lib/common";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,9 +8,11 @@ import { usePathname } from "next/navigation";
 export default function DashNavbar({
     name,
     companies,
+    currentCompany,
 }: {
     name: string;
     companies: Companies;
+    currentCompany: Company | null;
 }) {
     const pathname = usePathname();
     const logout = () => {
@@ -71,7 +73,6 @@ export default function DashNavbar({
                 >
                     <div className="flex flex-col gap-y-4 gap-x-0 mt-5 sm:flex-row sm:items-center sm:justify-end sm:gap-y-0 sm:gap-x-7 sm:mt-0 sm:pl-7">
                         <Link
-                            // className="font-medium text-white sm:py-6"
                             className={`font-medium text-white sm:py-6 ${
                                 pathname !== "/dashboard"
                                     ? "text-white/[.8]"
@@ -115,9 +116,16 @@ export default function DashNavbar({
                             <button
                                 id="hs-dropdown-with-dividers"
                                 type="button"
-                                className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm      "
+                                className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm"
                             >
-                                Company
+                                <span>
+                                    {currentCompany
+                                        ? truncateString(
+                                              currentCompany.name,
+                                              10
+                                          )
+                                        : "Company"}
+                                </span>
                                 <svg
                                     className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
                                     width="16"
@@ -136,8 +144,9 @@ export default function DashNavbar({
                             </button>
 
                             <div
-                                className="hs-dropdown-menu hidden transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 min-w-[15rem] bg-white shadow-md rounded-lg p-2 mt-2 divide-y divide-gray-200 z-10"
+                                className="hs-dropdown-menu hidden transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 min-w-[15rem] bg-white shadow-md rounded-lg p-2 mt-2 divide-y divide-gray-200"
                                 aria-labelledby="hs-dropdown-with-dividers"
+                                style={{ zIndex: 100 }}
                             >
                                 <div className="py-2 first:pt-0 last:pb-0">
                                     {companies.map((val) => (
