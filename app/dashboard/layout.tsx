@@ -8,6 +8,7 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 import { useCompanyStore } from "../store/company";
 import { Companies } from "../controllers/company";
+import { AccessType, userHasAccess } from "./access";
 
 export default function DashboardLayout({
     children,
@@ -24,6 +25,7 @@ export default function DashboardLayout({
             redirect("/auth/login?callbackUrl=/dashboard/products");
         },
     });
+    const access = userHasAccess(pathname, session?.user, currentCompany);
 
     useEffect(() => {
         setLoading(true);
@@ -42,6 +44,7 @@ export default function DashboardLayout({
                 <DashNavbar
                     name={session?.user?.name ?? ""}
                     companies={companies}
+                    currentCompany={currentCompany}
                 ></DashNavbar>
                 <div className="w-full max-w-5xl mx-auto py-5 px-5 sm:px-5 lg:px-1">
                     <div className="flex animate-pulse">
@@ -67,8 +70,9 @@ export default function DashboardLayout({
             <DashNavbar
                 name={session?.user?.name ?? ""}
                 companies={companies}
+                currentCompany={currentCompany}
             ></DashNavbar>
-            {!currentCompany?.active && (
+            {access === AccessType.PARTIAL && (
                 <div>
                     <SubsNotice></SubsNotice>
                     <div className="z-50 w-full h-full absolute"></div>
